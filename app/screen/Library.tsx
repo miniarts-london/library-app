@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, Suspense, lazy } from 'react'
-import { Modal } from '../component/Modal'
+import React, { useState, useEffect, Suspense, lazy, useTransition } from 'react'
 import { SectionAssetList } from '../component/SectionAssetList'
 import { assetTypes, showMoreNum, initAssetNum } from '../config'
 import { AssetList, ModalDataProps } from '../models/assets'
@@ -23,6 +22,8 @@ export function Library({ data }: {data: AssetList[]}) {
   const [kpiAssets, setKpiAssets] = useState<AssetList[]>()
   const [layoutsAssets, setLayoutsAssets] = useState<AssetList[]>()
   const [storyboardsAssets, setStoryboardsAssets] = useState<AssetList[]>()
+
+  const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
     void analyticsInit()
@@ -66,27 +67,21 @@ export function Library({ data }: {data: AssetList[]}) {
     })
   }
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void =>  {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const searchString = e.target.value
-
     if (searchString && searchString !== '') {
-      const filtered = data?.slice(0, assetNum).filter((item:AssetList) => item.name.toLowerCase().includes(searchString.toLowerCase()) ||
-                        item.description?.toLowerCase().includes(searchString.toLowerCase()))
-
-      setSearchResultMessage('')
-      setSearchResult(filtered)
-    
-      //no search results
-      if(!filtered.length){
-        setSearchResultMessage('No matching result')
-      } else {
-        setSearchResultMessage('')
-      }
+      startTransition(() => {
+        const filtered = data?.slice(0, assetNum).filter((item: AssetList) =>
+          item.name.toLowerCase().includes(searchString.toLowerCase()) ||
+          item.description?.toLowerCase().includes(searchString.toLowerCase())
+        )
+        setSearchResultMessage(filtered.length ? '' : 'No matching result')
+        setSearchResult(filtered)
+      })
     } else {
       setSearchResult([])
     }
   }
-
 
   let assetData : AssetList[] = loadedData
 
