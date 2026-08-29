@@ -9,6 +9,7 @@ import { AssetDetail, ModalDataProps } from '../models/assets'
 import { ChartData } from '../models/charts'
 import { COPY_LINK_PATH } from '../config'
 import { setIcon } from './Helper'
+import { createPortal } from 'react-dom'
 
 interface ModalProps{
     open: boolean
@@ -22,6 +23,9 @@ interface ModalProps{
 export function Modal({ open, data, assetType, setModalOpen, metrics=[], children }: ModalProps) {
 
     const [assetDetail, setAssetDetail] = useState<AssetDetail>()
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => setMounted(true), [])
 
     useEffect(()=>{
         //Get each asset details
@@ -52,7 +56,9 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
         }
     }
         
-    return (
+    if (!mounted) return null
+
+    return createPortal(
         <>
             <div id="default-modal" aria-hidden="true" onClick={(e)=>handleSetModalOpen(e)} className={`${open?'':'hidden'} fixed z-50 inset-0 bg-gray-400 bg-opacity-60 overflow-y-auto h-full w-full px-4`}>
                 <div className="relative top-20 mx-auto shadow-xl rounded-md bg-white max-w-3xl p-4 z-51" >
@@ -121,6 +127,7 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
                         </button>
                 </div>
             </div>
-        </>
+        </>,
+        document.getElementById('modal-root')!
     )
 }
