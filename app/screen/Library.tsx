@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense, lazy } from 'react'
 import { Modal } from '../component/Modal'
 import { SectionAssetList } from '../component/SectionAssetList'
 import { assetTypes, showMoreNum, initAssetNum } from '../config'
@@ -24,9 +24,9 @@ export function Library({ data }: {data: AssetList[]}) {
   const [layoutsAssets, setLayoutsAssets] = useState<AssetList[]>()
   const [storyboardsAssets, setStoryboardsAssets] = useState<AssetList[]>()
 
-  if (typeof window !== "undefined") {
-    analyticsInit()
-  }
+  useEffect(() => {
+    void analyticsInit()
+  }, [])
 
   useEffect(() => {
     //if the loaded data number is less than cached data, show "show more" link
@@ -113,6 +113,10 @@ export function Library({ data }: {data: AssetList[]}) {
     } 
   } 
 
+  const Modal = lazy(() =>
+    import('../component/Modal').then((mod) => ({ default: mod.Modal }))
+  )
+
   return (
     <>
       <div className="items-center flex flex-col mt-10">
@@ -193,9 +197,11 @@ export function Library({ data }: {data: AssetList[]}) {
         </a>
       </div>
 
-      {
-        modalData && <Modal open={modalOpen} data={modalData} assetType={assetType} setModalOpen={setModalOpen}/>
-      }
+      {modalData && (
+        <Suspense fallback={<div className="p-4">Loading asset…</div>}>
+          <Modal open={modalOpen} data={modalData} assetType={assetType} setModalOpen={setModalOpen} />
+        </Suspense>
+      )}
       <Request requestOpen={requestOpen} setRequestOpen={setRequestOpen}/>
     </>
   )

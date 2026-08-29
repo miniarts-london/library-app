@@ -43,9 +43,7 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
         navigator.clipboard.writeText(link)
     }
 
-    const handleClickFavourite = () => {
-        console.log(data)
-    }
+    const handleClickFavourite = () => {}
 
     const handleSetModalOpen = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()

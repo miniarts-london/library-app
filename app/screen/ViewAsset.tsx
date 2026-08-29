@@ -27,9 +27,7 @@ export function ViewAssetScreen ({data, assetType}: {data: AssetDetail, assetTyp
         
     }, [data])
 
-    const handleClickFavourite = () => {
-        console.log(data)
-    }
+    const handleClickFavourite = () => {}
 
     return (
         <div className="grid place-content-center">

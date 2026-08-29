@@ -15,7 +15,6 @@ const getAssetList = () => {
 export default async function LibraryScreen() {
   const data = await getAssetList()
 
-  console.log(data)
   return (
       <main className="flex min-h-screen flex-col p-24">
         <div className="items-center flex flex-col ">

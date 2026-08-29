@@ -1,5 +1,6 @@
 // import { User } from './models/user'
 import * as amplitude from '@amplitude/analytics-browser'
+import { MemoryStorage } from '@amplitude/analytics-core'
 import { BrowserClient } from '@amplitude/analytics-types'
 import UAParser from 'ua-parser-js'
 
@@ -29,14 +30,36 @@ function isString(value: any): value is string {
   return typeof value === 'string'
 }
 
+function isLocalStorageEnabled() {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  try {
+    const key = '__amp_storage_test__'
+    window.localStorage.setItem(key, key)
+    window.localStorage.removeItem(key)
+    return true
+  } catch {
+    return false
+  }
+}
+
 export async function analyticsInit() {
-  // amplitude.init('3fe72eb0657193f3adfb68c021bf5b62');
+  const apiKey = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY
+  if (!apiKey || amplitudeInstance) {
+    return
+  }
+
+  const canUseLocalStorage = isLocalStorageEnabled()
   amplitudeInstance = amplitude.createInstance()
-  await amplitudeInstance.init('3fe72eb0657193f3adfb68c021bf5b62', {
+  await amplitudeInstance.init(apiKey, {
     defaultTracking: {
       pageViews: true,
       fileDownloads: true,
     },
+    identityStorage: canUseLocalStorage ? 'localStorage' : 'none',
+    ...(canUseLocalStorage ? {} : { storageProvider: new MemoryStorage() }),
   })
 
   const identifyObj = new amplitude.Identify()
