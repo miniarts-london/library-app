@@ -7,6 +7,10 @@ import { AssetList, ModalDataProps } from '../models/assets'
 import { Request } from '../component/Request'
 import { analyticsInit, analyticsLogEvent } from '../analytics'
 
+const Modal = lazy(() =>
+  import('../component/Modal').then((mod) => ({ default: mod.Modal }))
+)
+
 export function Library({ data }: {data: AssetList[]}) {   
   const [loadedData, setLoadedData] = useState<AssetList[]>(data?.slice(0, initAssetNum))
   const [searchResult, setSearchResult] = useState<AssetList[]>()
@@ -23,7 +27,7 @@ export function Library({ data }: {data: AssetList[]}) {
   const [layoutsAssets, setLayoutsAssets] = useState<AssetList[]>()
   const [storyboardsAssets, setStoryboardsAssets] = useState<AssetList[]>()
 
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   useEffect(() => {
     void analyticsInit()
@@ -107,10 +111,6 @@ export function Library({ data }: {data: AssetList[]}) {
        break; 
     } 
   } 
-
-  const Modal = lazy(() =>
-    import('../component/Modal').then((mod) => ({ default: mod.Modal }))
-  )
 
   return (
     <>

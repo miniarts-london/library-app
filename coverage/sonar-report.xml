@@ -1,50 +1,50 @@
 <testExecutions version="1">
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewLayout.test.tsx">
-<testCase name="ViewLayout renders layout stats, KPIs and preview" duration="82" />
-</file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewKpi.test.tsx">
-<testCase name="ViewKpi renders metric ids, affiliate flag and business questions" duration="115" />
-</file>
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewStoryboard.test.tsx">
-<testCase name="ViewStoryboard renders storyboard details, affiliates and request access" duration="209" />
-</file>
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/screen/ViewAsset.test.tsx">
-<testCase name="ViewAssetScreen renders asset copy and the favourite action" duration="212" />
-<testCase name="ViewAssetScreen shows the KPI view for KPI assets" duration="13" />
-<testCase name="ViewAssetScreen shows the layout view for layout assets" duration="33" />
-</file>
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewChart.test.tsx">
-<testCase name="ViewChart shows loading when metrics are empty" duration="24" />
-<testCase name="ViewChart renders a pie chart and metric table" duration="15" />
-<testCase name="ViewChart renders a bar chart when type is not pie" duration="5" />
+<testCase name="ViewKpi renders metric ids, affiliate flag and business questions" duration="105" />
 </file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ChartsNivo/Pie/PieChart.test.tsx">
-<testCase name="PieChart should render a pie chart" duration="28" />
+<testCase name="PieChart should render a pie chart" duration="82" />
 </file>
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/Helper.test.tsx">
-<testCase name="Helper render an icon" duration="1" />
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewChart.test.tsx">
+<testCase name="ViewChart shows loading when metrics are empty" duration="80" />
+<testCase name="ViewChart renders a pie chart and metric table" duration="19" />
+<testCase name="ViewChart renders a bar chart when type is not pie" duration="12" />
 </file>
-<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/Modal.test.tsx">
-<testCase name="Modal shows loading then the fetched asset details" duration="98" />
-<testCase name="Modal closes when the close button is clicked" duration="207" />
-<testCase name="Modal copies a share link" duration="33" />
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/screen/ViewAsset.test.tsx">
+<testCase name="ViewAssetScreen renders asset copy and the favourite action" duration="321" />
+<testCase name="ViewAssetScreen shows the KPI view for KPI assets" duration="51" />
+<testCase name="ViewAssetScreen shows the layout view for layout assets" duration="61" />
 </file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ChartsNivo/Bar/BarChart.test.tsx">
-<testCase name="BarChart should render a Bar chart" duration="7" />
+<testCase name="BarChart should render a Bar chart" duration="24" />
+</file>
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewLayout.test.tsx">
+<testCase name="ViewLayout renders layout stats, KPIs and preview" duration="36" />
+</file>
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/Modal.test.tsx">
+<testCase name="Modal shows loading then the fetched asset details" duration="197" />
+<testCase name="Modal closes when the close button is clicked" duration="282" />
+<testCase name="Modal copies a share link" duration="27" />
+</file>
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/Helper.test.tsx">
+<testCase name="Helper render an icon" duration="3" />
+</file>
+<file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/ViewStoryboard.test.tsx">
+<testCase name="ViewStoryboard renders storyboard details, affiliates and request access" duration="48" />
 </file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/SectionAssetList.test.tsx">
-<testCase name="SectionAssetList renders the section title and assets" duration="352" />
-<testCase name="SectionAssetList calls handleOpenModal when an asset is clicked" duration="70" />
-<testCase name="SectionAssetList shows the highest-liked assets in Trending" duration="32" />
+<testCase name="SectionAssetList renders the section title and assets" duration="584" />
+<testCase name="SectionAssetList calls handleOpenModal when an asset is clicked" duration="121" />
+<testCase name="SectionAssetList shows the highest-liked assets in Trending" duration="82" />
 </file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/component/Request.test.tsx">
-<testCase name="Request opens the request form and sends" duration="410" />
-<testCase name="Request closes the form from the close button" duration="52" />
+<testCase name="Request opens the request form and sends" duration="415" />
+<testCase name="Request closes the form from the close button" duration="39" />
 </file>
 <file path="/Users/kaorinishimura/Documents/GitHub/library-app/app/screen/Library.test.tsx">
-<testCase name="Library renders featured assets on the default tab" duration="66" />
-<testCase name="Library filters the list when a tab is selected" duration="85" />
-<testCase name="Library shows matching search results and an empty message" duration="82" />
-<testCase name="Library shows the Show more control when there are extra assets" duration="109" />
+<testCase name="Library renders featured assets on the default tab" duration="528" />
+<testCase name="Library filters the list when a tab is selected" duration="287" />
+<testCase name="Library shows matching search results and an empty message" duration="143" />
+<testCase name="Library shows the Show more control when there are extra assets" duration="126" />
 </file>
 </testExecutions>

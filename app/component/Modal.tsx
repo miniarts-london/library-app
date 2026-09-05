@@ -58,6 +58,9 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
         
     if (!mounted) return null
 
+    const modalRoot = document.getElementById('modal-root')
+    if (!modalRoot) return null
+
     return createPortal(
         <>
             <div id="default-modal" aria-hidden="true" onClick={(e)=>handleSetModalOpen(e)} className={`${open?'':'hidden'} fixed z-50 inset-0 bg-gray-400 bg-opacity-60 overflow-y-auto h-full w-full px-4`}>
@@ -128,6 +131,6 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
                 </div>
             </div>
         </>,
-        document.getElementById('modal-root')!
+        modalRoot
     )
 }

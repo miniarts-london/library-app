@@ -5,7 +5,7 @@ import { ChartData } from '../../../models/charts'
 
 export interface PieChartProps {
   data: ChartData[]
-  valueFormat: (value: number) => void
+  valueFormat: (value: number) => string | number
   props?: any
 }
 
@@ -15,8 +15,6 @@ export function PieChart({ data, valueFormat, props }: PieChartProps) {
       <ResponsivePie
         {...props}
         data={data}
-        height={300}
-        width={400}
         margin={{
           top: 40,
           right: 100,
@@ -36,18 +34,15 @@ export function PieChart({ data, valueFormat, props }: PieChartProps) {
           modifiers: [['darker', 0.2]],
         }}
         enableArcLinkLabels={true}
-        arcLinkLabel={(data: ChartData) => `${data?.label}`}
+        arcLinkLabel={(datum) => `${datum.label}`}
         arcLinkLabelsSkipAngle={8}
         arcLinkLabelsOffset={0}
         arcLinkLabelsDiagonalLength={6}
         arcLinkLabelsStraightLength={6}
         activeOuterRadiusOffset={9}
         valueFormat={valueFormat}
-        slicesLabelsSkipAngle={0}
-        slicesLabelsTextColor='#333333'
         animate={true}
-        motionStiffness={90}
-        motionDamping={15}
+        motionConfig="default"
         arcLinkLabelsColor={{ from: 'color' }}
         arcLabelsComponent={({ label, style }) => {
           if (Number(label) > 2) {

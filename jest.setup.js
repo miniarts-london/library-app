@@ -2,6 +2,14 @@ import '@testing-library/jest-dom'
 
 // Enable fetch mocks
 require('jest-fetch-mock').enableMocks()
+
+beforeAll(() => {
+  if (!document.getElementById('modal-root')) {
+    const modalRoot = document.createElement('div')
+    modalRoot.setAttribute('id', 'modal-root')
+    document.body.appendChild(modalRoot)
+  }
+})
 // jest.mock('remark-gfm', () => ({}))
 
 // Allow router mocks.

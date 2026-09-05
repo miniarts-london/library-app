@@ -2,7 +2,7 @@ import { PieChart } from './PieChart'
 import { render, screen } from '@testing-library/react'
 
 jest.mock('@nivo/pie', () => ({
-  ResponsivePie: (props) => (
+  ResponsivePie: (props: Record<string, unknown>) => (
     <div data-testid='mock-nivo'>{JSON.stringify(props)}</div>
   ),
 }))

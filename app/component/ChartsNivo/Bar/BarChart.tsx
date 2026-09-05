@@ -29,7 +29,7 @@ export function BarChart({ data, props }: any) {
               filter='url(#background)'
               y={labelMargin / 2}
               x='13'
-              textAnchor='right'
+              textAnchor='end'
               alignmentBaseline='central'
               style={{
                 fontSize: '0.8em',

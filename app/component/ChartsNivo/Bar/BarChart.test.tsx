@@ -2,7 +2,7 @@ import { BarChart } from './BarChart'
 import { render, screen } from '@testing-library/react'
 
 jest.mock('@nivo/bar', () => ({
-  ResponsiveBar: (props) => (
+  ResponsiveBar: (props: Record<string, unknown>) => (
     <div data-testid='mock-nivo'>{JSON.stringify(props)}</div>
   ),
 }))
