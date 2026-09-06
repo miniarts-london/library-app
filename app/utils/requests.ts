@@ -1,10 +1,23 @@
+import { LIST_REVALIDATE_SECONDS, DETAIL_REVALIDATE_SECONDS } from '../config'
+
 export function ssrApiGet(
     url: string,
-    useCache?: boolean,
+    // Number = cache with Next.js's Data Cache and revalidate after this
+    // many seconds (ISR-style). `false` or omitted = always fetch fresh
+    // (no-store), which is only appropriate for client-side calls where
+    // Next's fetch cache doesn't apply anyway.
+    revalidate?: number | false,
+    // Cache tags for this fetch. Lets a future mutation call
+    // revalidateTag(tag) to invalidate this entry on demand, instead of
+    // waiting out the revalidate window above. Ignored when revalidate is
+    // falsy, since no-store fetches are never cached in the first place.
+    tags?: string[],
   ) {
-  
+
     return fetch(url, {
-      cache: useCache ? 'force-cache' : 'no-store',
+      ...(revalidate
+        ? { next: { revalidate, ...(tags ? { tags } : {}) } }
+        : { cache: 'no-store' as const }),
     }).catch((err) => {
       console.log(`Failed ssrApiGet '${url}'`)
       throw err
@@ -13,9 +26,10 @@ export function ssrApiGet(
 
 export async function ssrApiGetJson<T>(
     path: string,
-    useCache?: boolean,
+    revalidate?: number | false,
+    tags?: string[],
   ): Promise<T> {
-    const res = await ssrApiGet(path, useCache)
+    const res = await ssrApiGet(path, revalidate, tags)
     return res.json()
 }
 
@@ -28,7 +42,7 @@ export async function getAssetDetails(
     // const host = 'http://localhost:3000'
     const url = `${host}/api/asset/${id}`
   
-    const res = await ssrApiGet(url, false)
+    const res = await ssrApiGet(url, DETAIL_REVALIDATE_SECONDS, ['assets', `asset-${id}`])
 
     if (!res.ok) {
       throw new Error('Failed to fetch data')
@@ -44,7 +58,7 @@ export async function fetchAssetListFromAPI(){
   // const host = 'http://localhost:3000'
   const url = `${host}/api/asset`
  
-  const res = await ssrApiGet(url, false)
+  const res = await ssrApiGet(url, LIST_REVALIDATE_SECONDS, ['assets'])
 
   if (!res.ok) {
     throw new Error('Failed to fetch data')
@@ -59,7 +73,7 @@ export async function fetchAssetList(){
   // const host = 'http://localhost:3000'
   const url = `${host}/api/assetList`
   
-  const res = await ssrApiGet(url, false)
+  const res = await ssrApiGet(url, LIST_REVALIDATE_SECONDS, ['assets'])
 
   if (!res.ok) {
     throw new Error('Failed to fetch data')
@@ -76,6 +90,8 @@ export async function fetchMetricData(
   const host = window.location.origin
   const url =`${host}/api/metricData`
 
+  // This runs client-side (inside a useEffect), where Next.js's fetch
+  // Data Cache doesn't apply — kept as no-store/always-fresh.
   const res = await ssrApiGet(url, false)
 
   if (!res.ok) {
