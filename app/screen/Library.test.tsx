@@ -1,7 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Library } from './Library'
 import { AssetList } from '../models/assets'
+import { renderWithStore } from '../store/test-utils'
+import { makeStore } from '../store/store'
+import { toggleFavourite } from '../store/favouritesSlice'
 
 jest.mock('../analytics', () => ({
   analyticsInit: jest.fn(),
@@ -56,7 +59,7 @@ const assets: AssetList[] = [
 
 describe('Library', () => {
   test('renders featured assets on the default tab', async () => {
-    render(<Library data={assets} />)
+    renderWithStore(<Library data={assets} />)
 
     expect(screen.getByPlaceholderText('Type to search...')).toBeInTheDocument()
     expect((await screen.findAllByRole('heading', { name: 'KPI Alpha' })).length).toBeGreaterThan(0)
@@ -66,7 +69,7 @@ describe('Library', () => {
 
   test('filters the list when a tab is selected', async () => {
     const user = userEvent.setup()
-    render(<Library data={assets} />)
+    renderWithStore(<Library data={assets} />)
 
     await screen.findAllByRole('heading', { name: 'KPI Alpha' })
     await user.click(screen.getByRole('link', { name: 'KPI' }))
@@ -79,7 +82,7 @@ describe('Library', () => {
 
   test('shows matching search results and an empty message', async () => {
     const user = userEvent.setup()
-    render(<Library data={assets} />)
+    renderWithStore(<Library data={assets} />)
 
     await screen.findAllByRole('heading', { name: 'KPI Alpha' })
 
@@ -103,9 +106,19 @@ describe('Library', () => {
       featured: true,
     }))
 
-    render(<Library data={manyAssets} />)
+    renderWithStore(<Library data={manyAssets} />)
 
     const showMore = await screen.findByRole('link', { name: 'Show more' })
     expect(showMore).not.toHaveClass('hidden')
+  })
+
+  test('shows favourites saved in the store', async () => {
+    const store = makeStore()
+    store.dispatch(toggleFavourite({ id: 1, name: 'KPI Alpha' }))
+
+    renderWithStore(<Library data={assets} />, store)
+
+    expect(await screen.findByText('Favourites (1)')).toBeInTheDocument()
+    expect(screen.queryByText('None yet. Open an asset and tap Favourite item.')).not.toBeInTheDocument()
   })
 })

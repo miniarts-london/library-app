@@ -10,6 +10,8 @@ import { ChartData } from '../models/charts'
 import { COPY_LINK_PATH } from '../config'
 import { setIcon } from './Helper'
 import { createPortal } from 'react-dom'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { selectIsFavourite, toggleFavourite } from '../store/favouritesSlice'
 
 interface ModalProps{
     open: boolean
@@ -24,6 +26,8 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
 
     const [assetDetail, setAssetDetail] = useState<AssetDetail>()
     const [mounted, setMounted] = useState(false)
+    const dispatch = useAppDispatch()
+    const isFavourite = useAppSelector(selectIsFavourite(data.id))
 
     useEffect(() => setMounted(true), [])
 
@@ -47,7 +51,10 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
         navigator.clipboard.writeText(link)
     }
 
-    const handleClickFavourite = () => {}
+    const handleClickFavourite = () => {
+        if (!assetDetail) return
+        dispatch(toggleFavourite({ id: assetDetail.id, name: assetDetail.name }))
+    }
 
     const handleSetModalOpen = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation()
@@ -126,7 +133,7 @@ export function Modal({ open, data, assetType, setModalOpen, metrics=[], childre
                             <svg className="h-6 w-6 text-gray-200"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                             </svg>
-                            Favourite item
+                            {isFavourite ? 'Remove favourite' : 'Favourite item'}
                         </button>
                 </div>
             </div>

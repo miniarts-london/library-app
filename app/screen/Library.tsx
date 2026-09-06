@@ -5,6 +5,7 @@ import { SectionAssetList } from '../component/SectionAssetList'
 import { assetTypes, showMoreNum, initAssetNum } from '../config'
 import { AssetList, ModalDataProps } from '../models/assets'
 import { Request } from '../component/Request'
+import { FavouritesBar } from '../component/FavouritesBar'
 import { analyticsInit, analyticsLogEvent } from '../analytics'
 
 const Modal = lazy(() =>
@@ -131,6 +132,7 @@ export function Library({ data }: {data: AssetList[]}) {
               />
           </div>
       </div>
+      <FavouritesBar />
     
     <p className='text-red-500'>
       {searchResultMessage}

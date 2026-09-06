@@ -1,7 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { ViewAssetScreen } from './ViewAsset'
 import { AssetDetail } from '../models/assets'
 import { fetchMetricData } from '../utils/requests'
+import { renderWithStore } from '../store/test-utils'
 
 jest.mock('../utils/requests', () => ({
   fetchMetricData: jest.fn(),
@@ -44,7 +46,7 @@ describe('ViewAssetScreen', () => {
   })
 
   test('renders asset copy and the favourite action', async () => {
-    render(<ViewAssetScreen data={kpiAsset} assetType="KPI" />)
+    renderWithStore(<ViewAssetScreen data={kpiAsset} assetType="KPI" />)
 
     expect(screen.getByRole('heading', { name: /KPI Alpha/i })).toBeInTheDocument()
     expect(screen.getByText('Short KPI copy')).toBeInTheDocument()
@@ -53,8 +55,19 @@ describe('ViewAssetScreen', () => {
     await waitFor(() => expect(mockedFetchMetricData).toHaveBeenCalled())
   })
 
+  test('toggles favourite on the asset screen', async () => {
+    const user = userEvent.setup()
+    renderWithStore(<ViewAssetScreen data={kpiAsset} assetType="KPI" />)
+
+    await user.click(screen.getByRole('button', { name: /favourite item/i }))
+    expect(screen.getByRole('button', { name: /remove favourite/i })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /remove favourite/i }))
+    expect(screen.getByRole('button', { name: /favourite item/i })).toBeInTheDocument()
+  })
+
   test('shows the KPI view for KPI assets', async () => {
-    render(<ViewAssetScreen data={kpiAsset} assetType="KPI" />)
+    renderWithStore(<ViewAssetScreen data={kpiAsset} assetType="KPI" />)
 
     expect(screen.getByText('Metric IDs:')).toBeInTheDocument()
     expect(screen.getByText('Business questions')).toBeInTheDocument()
@@ -62,7 +75,7 @@ describe('ViewAssetScreen', () => {
   })
 
   test('shows the layout view for layout assets', async () => {
-    render(<ViewAssetScreen data={layoutAsset} assetType="Layouts" />)
+    renderWithStore(<ViewAssetScreen data={layoutAsset} assetType="Layouts" />)
 
     expect(screen.getByText('LAYOUT')).toBeInTheDocument()
     expect(screen.getByText('Used KPI')).toBeInTheDocument()

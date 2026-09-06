@@ -1,7 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Modal } from './Modal'
 import { getAssetDetails } from '../utils/requests'
+import { renderWithStore } from '../store/test-utils'
 
 jest.mock('../utils/requests', () => ({
   getAssetDetails: jest.fn(),
@@ -38,7 +39,7 @@ describe('Modal', () => {
   })
 
   test('shows loading then the fetched asset details', async () => {
-    render(
+    renderWithStore(
       <Modal
         open
         data={{ id: 1, asset_type: 'KPI' }}
@@ -57,7 +58,7 @@ describe('Modal', () => {
     const user = userEvent.setup()
     const setModalOpen = jest.fn()
 
-    render(
+    renderWithStore(
       <Modal
         open
         data={{ id: 1, asset_type: 'KPI' }}
@@ -72,8 +73,25 @@ describe('Modal', () => {
     expect(setModalOpen).toHaveBeenCalledWith(false)
   })
 
+  test('toggles favourite from the modal', async () => {
+    const user = userEvent.setup()
+
+    renderWithStore(
+      <Modal
+        open
+        data={{ id: 1, asset_type: 'KPI' }}
+        assetType="KPI"
+        setModalOpen={jest.fn()}
+      />,
+    )
+
+    await screen.findByText('KPI Alpha')
+    await user.click(screen.getByText('Favourite item'))
+    expect(screen.getByText('Remove favourite')).toBeInTheDocument()
+  })
+
   test('copies a share link', async () => {
-    render(
+    renderWithStore(
       <Modal
         open
         data={{ id: 1, asset_type: 'KPI' }}

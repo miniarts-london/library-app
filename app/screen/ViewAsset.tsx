@@ -10,9 +10,13 @@ import { AssetDetail } from '../models/assets'
 import { ChartData } from '../models/charts'
 import { fetchMetricData } from '../utils/requests'
 import { setIcon } from '../component/Helper'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { selectIsFavourite, toggleFavourite } from '../store/favouritesSlice'
 
 export function ViewAssetScreen ({data, assetType}: {data: AssetDetail, assetType: string}) {
     const [metrics, setMetrics] = useState<ChartData[]>([])
+    const dispatch = useAppDispatch()
+    const isFavourite = useAppSelector(selectIsFavourite(data.id))
 
     useEffect(()=> {
         const getMetricsData = async()=>{
@@ -27,7 +31,9 @@ export function ViewAssetScreen ({data, assetType}: {data: AssetDetail, assetTyp
         
     }, [data])
 
-    const handleClickFavourite = () => {}
+    const handleClickFavourite = () => {
+        dispatch(toggleFavourite({ id: data.id, name: data.name }))
+    }
 
     return (
         <div className="grid place-content-center">
@@ -55,7 +61,7 @@ export function ViewAssetScreen ({data, assetType}: {data: AssetDetail, assetTyp
                     <svg className="h-6 w-6 text-gray-200"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                     </svg>
-                    Favourite item
+                    {isFavourite ? 'Remove favourite' : 'Favourite item'}
                 </button>
             </div>
         </div>
